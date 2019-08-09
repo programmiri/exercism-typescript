@@ -7,17 +7,15 @@ const DNA_TO_RNA_MAP: StringMap = {
 	A: 'U'
 };
 
-function validDna(dnaList: Array<string>): boolean {
-	return dnaList.every(dna => !!DNA_TO_RNA_MAP[dna]);
-}
+const validDna = (dna: string): boolean => !!DNA_TO_RNA_MAP[dna];
+
 class Transcriptor {
 	toRna(dnaStrand: string): string {
-		const dnaStrandList = dnaStrand.split('');
-		const isValidDna = validDna(dnaStrandList);
-		if (isValidDna === false) {
-			throw Error('Invalid input DNA.');
-		}
-		return dnaStrandList.map(dna => DNA_TO_RNA_MAP[dna]).join('');
+		return dnaStrand.split('').reduce((acc, dna) => {
+			if (!validDna(dna)) throw Error('Invalid input DNA.');
+			acc += DNA_TO_RNA_MAP[dna];
+			return acc;
+		}, '');
 	}
 }
 
